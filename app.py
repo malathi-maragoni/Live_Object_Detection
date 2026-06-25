@@ -6,12 +6,14 @@ from PIL import Image
 # Load YOLOv5s pretrained on COCO
 @st.cache_resource
 def load_model():
-    return YOLO("yolov5s.pt")  # automatically downloads pretrained weights
+    # Use model name instead of local .pt file
+    return YOLO("yolov5s")
 
 model = load_model()
 
 st.title("🔍 Live Object Detection with YOLOv5 (COCO Dataset)")
 
+# Sidebar options
 source_option = st.sidebar.radio("Select Source", ("Webcam", "Upload Image"))
 
 if source_option == "Upload Image":
@@ -35,8 +37,12 @@ elif source_option == "Webcam":
             st.write("Failed to capture frame")
             break
 
+        # Run detection
         results = model(frame)
         res_plotted = results[0].plot()
+
+        # Show frame in Streamlit
         FRAME_WINDOW.image(res_plotted)
 
     cap.release()
+
