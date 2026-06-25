@@ -3,17 +3,14 @@ import cv2
 from ultralytics import YOLO
 from PIL import Image
 
-# Load YOLOv5s pretrained on COCO
 @st.cache_resource
 def load_model():
-    # Use model name instead of local .pt file
-    return YOLO("yolov5s")
+    return YOLO("yolov8n.pt")  # auto-downloads pretrained weights
 
 model = load_model()
 
-st.title("🔍 Live Object Detection with YOLOv5 (COCO Dataset)")
+st.title("🔍 Live Object Detection with YOLO (COCO Dataset)")
 
-# Sidebar options
 source_option = st.sidebar.radio("Select Source", ("Webcam", "Upload Image"))
 
 if source_option == "Upload Image":
@@ -21,7 +18,6 @@ if source_option == "Upload Image":
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         results = model(image)
-        # Plot results
         res_plotted = results[0].plot()
         st.image(res_plotted, caption="Detected Objects", use_column_width=True)
 
@@ -37,12 +33,10 @@ elif source_option == "Webcam":
             st.write("Failed to capture frame")
             break
 
-        # Run detection
         results = model(frame)
         res_plotted = results[0].plot()
-
-        # Show frame in Streamlit
         FRAME_WINDOW.image(res_plotted)
 
     cap.release()
+
 
