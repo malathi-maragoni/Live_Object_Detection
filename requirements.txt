@@ -4,4 +4,4 @@ torchvision==0.27.1
 opencv-python==4.10.0.84   
 pillow==12.2.0
 ultralytics==8.2.50
-numpy==1.26.4              
+numpy==1.26.4             
